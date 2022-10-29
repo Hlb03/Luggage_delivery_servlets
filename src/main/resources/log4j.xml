@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name= "main.java.org.luggage_delivery.web.listener.ContextListener" level="debug" additivity="true">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+<!--        <Logger name= "main.java.web.filter.encoding_filter.EncodingFilter" level="info" additivity="true">-->
+<!--            <AppenderRef ref="Console"/>-->
+<!--        </Logger>-->
+
+<!--        <Logger name= "main.java.util.DefaultPaginationSettings" level="info" additivity="true">-->
+<!--            <AppenderRef ref="Console"/>-->
+<!--        </Logger>-->
+
+        <!-- Root Logger -->
+        <Root level="all">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+
+
+</Configuration>

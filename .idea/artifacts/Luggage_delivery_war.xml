@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Luggage-delivery:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>Luggage-delivery</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="Luggage-delivery-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Luggage-delivery:war exploded" />
+    </root>
+  </artifact>
+</component>
