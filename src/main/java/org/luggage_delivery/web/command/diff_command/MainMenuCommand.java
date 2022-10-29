@@ -8,10 +8,13 @@ package org.luggage_delivery.web.command.diff_command;
 import org.hibernate.Session;
 import org.luggage_delivery.dao.dao_implementations.RouteDAOImpl;
 import org.luggage_delivery.dao.dao_implementations.TariffDAOImpl;
-import org.luggage_delivery.dao.dao_interfaces.RouteDAO;
-import org.luggage_delivery.dao.dao_interfaces.TariffDAO;
 import org.luggage_delivery.entity.Route;
 import org.luggage_delivery.entity.Tariff;
+import org.luggage_delivery.exceptions.DataBaseException;
+import org.luggage_delivery.service.RouteService;
+import org.luggage_delivery.service.TariffService;
+import org.luggage_delivery.service.service_impls.RouteServiceImpl;
+import org.luggage_delivery.service.service_impls.TariffServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.util.PaginationUtil;
 import org.luggage_delivery.web.command.Command;
@@ -26,46 +29,49 @@ import static org.luggage_delivery.util.PaginationUtil.getDefaultPaginationData;
 public class MainMenuCommand extends Command {
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        int[] paginationData = PaginationUtil.getDefaultPaginationData(req);
 
+        try {
 
-        String tariffDir = req.getParameter("tariffDir");
-        String row = req.getParameter("row");
-        String routeDir = req.getParameter("routeDir");
-        String col = req.getParameter("col");
+            String tariffDir = req.getParameter("tariffDir");
+            String row = req.getParameter("row");
+            String routeDir = req.getParameter("routeDir");
+            String col = req.getParameter("col");
 
-        if (row == null)
-            row = "id";
+            if (row == null)
+                row = "id";
 
-        if (tariffDir == null || tariffDir.equals("asc"))
-            tariffDir = "desc";
-        else tariffDir = "asc";
+            if (tariffDir == null || tariffDir.equals("asc"))
+                tariffDir = "desc";
+            else tariffDir = "asc";
 
-        if (col == null)
-            col = "distance";
+            if (col == null)
+                col = "distance";
 
-        if (routeDir == null || routeDir.equals("asc"))
-            routeDir = "desc";
-        else routeDir = "asc";
+            if (routeDir == null || routeDir.equals("asc"))
+                routeDir = "desc";
+            else routeDir = "asc";
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
 
-        TariffDAO tariffDAO = new TariffDAOImpl(session);
-        RouteDAO routeDAO = new RouteDAOImpl(session);
-        List<Tariff> tariffs = tariffDAO.getAllTariffs(row, tariffDir);
-        List<Route> routes = routeDAO.getAllRoutes(PaginationUtil.getDefaultPaginationData(req)[0], col, routeDir);
-        System.out.println(routeDAO.getAmountOfRoutes() + " AMOUNT OF ROUTES");
+            TariffService tariffService = new TariffServiceImpl(new TariffDAOImpl(session));
+            RouteService routeService = new RouteServiceImpl(new RouteDAOImpl(session));
+            List<Tariff> tariffs = tariffService.getTariffs(row, tariffDir);
+            List<Route> routes = routeService.getAllRoutes(getDefaultPaginationData(req)[0], col, routeDir);
+            System.out.println(routeService.getRoutesAmount() + " AMOUNT OF ROUTES");
 
-        session.getTransaction().commit();
-        session.close();
+            session.getTransaction().commit();
+            session.close();
 
-        System.out.println(routes);
-        req.setAttribute("allTariffs", tariffs);
-        req.setAttribute("allRoutes", routes);
+            System.out.println(routes);
+            req.setAttribute("allTariffs", tariffs);
+            req.setAttribute("allRoutes", routes);
 
-        req.setAttribute("tariffDir",  tariffDir);
-        req.setAttribute("routeDir", routeDir);
+            req.setAttribute("tariffDir", tariffDir);
+            req.setAttribute("routeDir", routeDir);
+        } catch (DataBaseException e) {
+            e.printStackTrace();
+        }
 
         return "WEB-INF/jsp/main-page.jsp";
     }

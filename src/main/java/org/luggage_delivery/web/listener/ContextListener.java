@@ -35,7 +35,7 @@ public class ContextListener implements ServletContextListener {
 
         Command mainMenuCommand = new MainMenuCommand();
         Command makeOrderCommand = new MakeOrderCommand();
-        Command authorizeCommand = new AuthorizationCommand();
+        Command authorizeCommand = new SignInFormCommand();
         Command pageNotFoundCommand = new PageNotFoundCommand();
         Command orderProcessCommand = new OrderProcessCommand();
 

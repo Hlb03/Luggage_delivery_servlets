@@ -6,41 +6,75 @@ package org.luggage_delivery.web.command.diff_command;
 */
 
 import org.hibernate.Session;
+import org.luggage_delivery.dao.dao_implementations.DeliveryDAOImpl;
 import org.luggage_delivery.dao.dao_implementations.DeliveryStatusDAOImpl;
-import org.luggage_delivery.dao.dao_implementations.TariffDAOImpl;
-import org.luggage_delivery.dao.dao_interfaces.DeliveryStatusDAO;
-import org.luggage_delivery.dao.dao_interfaces.TariffDAO;
-import org.luggage_delivery.entity.Tariff;
+import org.luggage_delivery.dao.dao_implementations.RouteDAOImpl;
+import org.luggage_delivery.entity.*;
+import org.luggage_delivery.exceptions.DataBaseException;
+import org.luggage_delivery.service.DeliveryService;
+import org.luggage_delivery.service.DeliveryStatusService;
+import org.luggage_delivery.service.RouteService;
+import org.luggage_delivery.service.service_impls.DeliveryServiceImpl;
+import org.luggage_delivery.service.service_impls.DeliveryStatusServiceImpl;
+import org.luggage_delivery.service.service_impls.RouteServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
+import org.luggage_delivery.util.PriceCalculationUtil;
 import org.luggage_delivery.web.command.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+
+import static org.luggage_delivery.util.PriceCalculationUtil.calculateGeneralPrice;
 
 public class OrderProcessCommand extends Command {
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-        System.out.println(req.getParameter("luggage-size") + " SIZE OF PRODUCT");
-        System.out.println(req.getParameter("luggage-type") + " TYPE OF PRODUCT");
-        System.out.println(req.getParameter("luggage-weight") + " WEIGHT OF PRODUCT");
-        System.out.println(req.getParameter("routeId") + " ROUTE ID OF PRODUCT");
-        System.out.println(req.getParameter("luggage-del-date") + " DELIVERY DATE OF PRODUCT");
-        System.out.println(req.getParameter("delivery-address") + " DELIVERY ADDRESS OF PRODUCT");
-        System.out.println(req.getParameter("empty") + " ADDITIONAL OPTION OF PRODUCT");
-        System.out.println(req.getParameter("fragile") + " ADDITIONAL OPTION OF PRODUCT");
-        System.out.println(req.getParameter("radioResult") + " ADDITIONAL CHECK WITH JS OPTION OF PRODUCT");
+
+        ResourceBundle rs = ResourceBundle.getBundle("all-tariffs");
+        System.out.println(rs.getString("distance"));
 
 
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        TariffDAO tariffDAO = new TariffDAOImpl(session);
-//        DeliveryStatusDAO deliveryStatusDAO = new DeliveryStatusDAOImpl(session);
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
 
-//        List<Tariff> tariffs = tariffDAO.getAllTariffs("type", "asc");
+        DeliveryStatusService deliveryService = new DeliveryStatusServiceImpl(new DeliveryStatusDAOImpl(session));
+        RouteService routeService = new RouteServiceImpl(new RouteDAOImpl(session));
+        DeliveryService deliveryServ = new DeliveryServiceImpl(new DeliveryDAOImpl(session));
 
-//        session.close();
-        System.out.println("HELLO WORLD IN ORDER PROCESS COMMAND!");
-        return "Luggage-delivery?cmd=exit";
+        //TEMP OPTION
+        User user = new User();
+        user.setId(2);
+
+        try {
+            DeliveryStatus status = deliveryService.getStatusByName("PROCESSING");
+            Route route = routeService.getById(Integer.parseInt(req.getParameter("routeId")));
+            System.out.println(status + " " + route);
+
+            Delivery delivery = new Delivery();
+            delivery.setSize(new BigDecimal(req.getParameter("luggage-size")));
+            delivery.setLuggageType(req.getParameter("luggage-type"));
+            delivery.setWeight(new BigDecimal(req.getParameter("luggage-weight")));
+            delivery.setStartDate(Date.valueOf(LocalDate.now()));
+            delivery.setDeliveryDate(Date.valueOf(req.getParameter("luggage-del-date")));
+            delivery.setDeliveryAddress(req.getParameter("delivery-address"));
+            delivery.setRoute(route);
+            delivery.setDeliveryStatus(status);
+            delivery.setUser(user);
+            delivery.setTotalPrice(calculateGeneralPrice(delivery, req.getParameter("option")));
+
+            System.out.println("DELIVERY PARAMS " + delivery);
+//            deliveryServ.addDelivery(delivery);
+            session.getTransaction().commit();
+            session.close();
+
+        } catch (DataBaseException e) {
+            e.printStackTrace();
+        }
+        return "Luggage-delivery?cmd=user-room";
     }
 }

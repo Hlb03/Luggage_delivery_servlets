@@ -11,7 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AuthorizationCommand extends Command {
+public class SignInFormCommand extends Command {
 
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
