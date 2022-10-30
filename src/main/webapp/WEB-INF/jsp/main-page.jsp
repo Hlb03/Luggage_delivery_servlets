@@ -30,19 +30,36 @@
                     <a class="nav-link"
                        href="${pageContext.request.contextPath}/Luggage-delivery?cmd=make-order">Make order</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">View my orders</a>
-                </li>
-            </ul>
-            <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery"
-                  style="position: relative; left: 1050px">
                 <c:choose>
                     <c:when test="${sessionScope.user eq null}">
+                        <li class="nav-item">
+                            <a class="nav-link disabled"
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my orders</a>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.user ne null}">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my orders</a>
+                        </li>
+                    </c:when>
+                </c:choose>
+<%--                <li class="nav-item">--%>
+<%--                    <a class="nav-link disabled" href="#">View my orders</a>--%>
+<%--                </li>--%>
+            </ul>
+                <c:choose>
+                    <c:when test="${sessionScope.user eq null}">
+                        <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery"
+                                style="position: relative; left: 1050px">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
                         <input type="hidden" name="cmd" value="authorize"><br>
                     </c:when>
                     <c:when test="${sessionScope.user ne null}">
+                        <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery" method="post"
+                              style="position: relative; left: 1050px">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign out</button>
+                        <input type="hidden" name="cmd" value="logout">
                     </c:when>
                 </c:choose>
             </form>
