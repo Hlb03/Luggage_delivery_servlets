@@ -5,8 +5,6 @@ package org.luggage_delivery.web.filter;
   Cur_time: 17:31
 */
 
-import org.luggage_delivery.web.command.diff_command.MakeOrderCommand;
-import org.luggage_delivery.web.listener.ContextListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,19 +19,18 @@ public class MakeOrderFilter implements Filter {
 
     private final static Logger LOG = LoggerFactory.getLogger(MakeOrderFilter.class);
 
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        System.out.println("IN WEB FILTER");
+//        System.out.println("IN WEB FILTER");
 
         String cmdParam = req.getParameter("cmd");
-        System.out.println(req.getSession().getAttribute("user") + " USER PARAM FROM SESSION");
+//        System.out.println(req.getSession().getAttribute("user") + " USER PARAM FROM SESSION");
 
-        if (cmdParam != null && cmdParam.equals("order-process")){
+        if (cmdParam != null && cmdParam.equals("order-process") && req.getSession().getAttribute("user") == null){
             LOG.debug("Not authorized user trying to make order. Redirecting hin to authorization page...");
-            System.out.println("HELLO WORLD IN FILTER!");
+//            System.out.println("HELLO WORLD IN FILTER!");
             resp.sendRedirect("Luggage-delivery?cmd=authorize");
         } else chain.doFilter(request, response);
 

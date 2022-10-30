@@ -38,6 +38,9 @@ public class ContextListener implements ServletContextListener {
         Command authorizeCommand = new SignInFormCommand();
         Command pageNotFoundCommand = new PageNotFoundCommand();
         Command orderProcessCommand = new OrderProcessCommand();
+        Command checkAuthorizationCommand = new AuthorizationCommand();
+        Command userAccountCommand = new UserAccountCommand();
+        Command logoutCommand = new SignOutCommand();
 
         container.addCommand(null, mainMenuCommand);
         container.addCommand("", mainMenuCommand);
@@ -45,6 +48,9 @@ public class ContextListener implements ServletContextListener {
         container.addCommand("make-order", makeOrderCommand);
         container.addCommand("order-process", orderProcessCommand);
         container.addCommand("authorize", authorizeCommand);
+        container.addCommand("logout", logoutCommand);
+        container.addCommand("user-check", checkAuthorizationCommand);
+        container.addCommand("user-room", userAccountCommand);
         container.addCommand("404", pageNotFoundCommand);
 
         context.setAttribute("commandContainer", container);
