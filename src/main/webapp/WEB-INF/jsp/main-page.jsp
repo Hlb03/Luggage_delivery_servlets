@@ -44,9 +44,6 @@
                         </li>
                     </c:when>
                 </c:choose>
-<%--                <li class="nav-item">--%>
-<%--                    <a class="nav-link disabled" href="#">View my orders</a>--%>
-<%--                </li>--%>
             </ul>
                 <c:choose>
                     <c:when test="${sessionScope.user eq null}">
@@ -74,10 +71,10 @@
     <h3 style="text-align: center">Tariffs on luggage delivery:</h3>
     <div class="row" style="background-color: lightblue; text-align: center">
         <div style="font-size: 20px" class="col-6">
-            <a href="Luggage-delivery?tariffDir=${requestScope.tariffDir}&row=type"
+            <a href="Luggage-delivery?page=${requestScope.currentPage}&tariffDir=${requestScope.tariffDir}&row=type&route-change=false&col=${requestScope.col}&routeDir=${requestScope.routeDir}"
                 style="color: black">NAME</a></div>
         <div style="font-size: 20px" class="col-6">
-            <a href="Luggage-delivery?tariffDir=${requestScope.tariffDir}&row=price"
+            <a href="Luggage-delivery?page=${requestScope.currentPage}&tariffDir=${requestScope.tariffDir}&row=price&route-change=false&col=${requestScope.col}&routeDir=${requestScope.routeDir}"
                style="color: black">MULTIPLICATION FACTOR</a></div>
     </div>
     <c:forEach items="${requestScope.allTariffs}" var="tariff">
@@ -91,10 +88,10 @@
     <h3 style="text-align: center">All available routes:</h3>
     <div class="row" style="background-color: lightcoral; text-align: center">
         <div style="font-size: 20px" class="col-6">
-            <a href="Luggage-delivery?routeDir=${requestScope.routeDir}&col=startPoint"
+            <a href="Luggage-delivery?page=${requestScope.currentPage}&routeDir=${requestScope.routeDir}&col=startPoint"
                style="color: black">FROM</a></div>
         <div style="font-size: 20px" class="col-6">
-            <a href="Luggage-delivery?routeDir=${requestScope.routeDir}&col=destinationPoint"
+            <a href="Luggage-delivery?page=${requestScope.currentPage}&routeDir=${requestScope.routeDir}&col=destinationPoint"
                style="color: black">TO</a></div>
     </div>
     <c:forEach items="${requestScope.allRoutes}" var="route">
@@ -107,15 +104,37 @@
 
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
+            <c:choose>
+                <c:when test="${requestScope.currentPage eq 1}">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    </li>
+                </c:when>
+                <c:when test="${requestScope.currentPage ne 1}">
+                    <li class="page-item">
+                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&route-change=false&tariff-change=false"
+                           tabindex="-1">Previous</a>
+                    </li>
+                </c:when>
+            </c:choose>
+<%--            <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+<%--            <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
+<%--            <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+            <c:choose>
+                <c:when test="${requestScope.currentPage lt requestScope.totalPages}">
+                <li class="page-item">
+                    <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage + 1}&tariffDir=${requestScope.tariffDir}&row=${requestScope.row}&routeDir=${requestScope.routeDir}&col=${requestScope.col}&route-change=false&tariff-change=false">
+                        Next</a>
+                </li>
+                </c:when>
+                <c:when test="${requestScope.currentPage eq requestScope.totalPages}">
+                    <li class="page-item disabled">
+                        <a class="page-link"
+                           href="#">
+                            Next</a>
+                    </li>
+                </c:when>
+            </c:choose>
         </ul>
     </nav>
 </div>

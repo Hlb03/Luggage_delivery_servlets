@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RouteDAO {
     void addNewRoute(Route route);
-    List<Route> getAllRoutes(int page, String rowToOrder, String typeOfOrder);
+    List<Route> getAllRoutes(int page, int dataAmount, String rowToOrder, String typeOfOrder);
     long getAmountOfRoutes();
     Route getById(int id);
     Route getByRoute(String start, String end);

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RouteService {
     void addRoute(Route route) throws DataBaseException;
-    List<Route> getAllRoutes(int page, String rowToOrder, String typeOfOrder) throws DataBaseException;
+    List<Route> getAllRoutes(int page, int dataAmount, String rowToOrder, String typeOfOrder) throws DataBaseException;
     long getRoutesAmount() throws DataBaseException;
     Route getById(int id) throws DataBaseException;
     Route getByRoute(String start, String end) throws DataBaseException;

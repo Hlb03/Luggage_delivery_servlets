@@ -26,12 +26,11 @@ public class RouteDAOImpl implements RouteDAO {
     }
 
     @Override
-    public List<Route> getAllRoutes(int page, String rowToOrder, String typeOfOrder) {
-        return session.createQuery("SELECT r FROM Route r ORDER BY " + rowToOrder + " " + typeOfOrder
-                , Route.class).setMaxResults(4).list();
+    public List<Route> getAllRoutes(int page, int dataAmount, String rowToOrder, String typeOfOrder) {
+        int firstData = page * dataAmount - dataAmount;
 
-        // .setMaxResults(4)
-//        return session.createQuery("SELECT r FROM Route r", Route.class).list();
+        return session.createQuery("SELECT r FROM Route r ORDER BY " + rowToOrder + " " + typeOfOrder
+                , Route.class).setFirstResult(firstData).setMaxResults(dataAmount).list();
     }
 
     @Override

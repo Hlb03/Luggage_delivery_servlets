@@ -7,7 +7,6 @@ package org.luggage_delivery.web.command.diff_command;
 
 import org.hibernate.Session;
 import org.luggage_delivery.dao.dao_implementations.RouteDAOImpl;
-import org.luggage_delivery.dao.dao_interfaces.RouteDAO;
 import org.luggage_delivery.entity.Route;
 import org.luggage_delivery.exceptions.DataBaseException;
 import org.luggage_delivery.service.RouteService;
@@ -20,15 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import static org.luggage_delivery.util.PaginationUtil.getDefaultPaginationData;
-
 public class MakeOrderCommand extends Command {
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
         try {
             Session session = HibernateUtil.getSessionFactory().openSession();
             RouteService routeService = new RouteServiceImpl(new RouteDAOImpl(session));
-            List<Route> routes = routeService.getAllRoutes(getDefaultPaginationData(req)[0], "distance", "asc");
+            long totalAmountOfRouts = routeService.getRoutesAmount();
+            System.out.println("TOTAL AMOUNT OF ROUTES - " + totalAmountOfRouts);
+            List<Route> routes = routeService.getAllRoutes(1, (int) totalAmountOfRouts, "distance", "asc");
 
             session.close();
 

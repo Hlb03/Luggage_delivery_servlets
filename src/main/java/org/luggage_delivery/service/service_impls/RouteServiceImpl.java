@@ -30,9 +30,9 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public List<Route> getAllRoutes(int page, String rowToOrder, String typeOfOrder) throws DataBaseException {
+    public List<Route> getAllRoutes(int page, int dataAmount, String rowToOrder, String typeOfOrder) throws DataBaseException {
         try {
-            return routeDAO.getAllRoutes(page, rowToOrder, typeOfOrder);
+            return routeDAO.getAllRoutes(page, dataAmount, rowToOrder, typeOfOrder);
         } catch (Exception e) {
             throw new DataBaseException("Failed to get routes", e);
         }
