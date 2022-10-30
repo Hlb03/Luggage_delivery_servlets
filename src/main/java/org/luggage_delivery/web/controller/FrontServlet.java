@@ -48,7 +48,7 @@ public class FrontServlet extends HttpServlet {
         resp.sendRedirect(url);
     }
 
-    String getUrl(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    String getUrl(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String cmdName = req.getParameter("cmd");
         LOG.debug(cmdName);
         Command command = container.getCommand(cmdName);

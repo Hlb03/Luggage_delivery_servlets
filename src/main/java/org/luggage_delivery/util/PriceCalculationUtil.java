@@ -40,10 +40,22 @@ public class PriceCalculationUtil {
 
         if (totalPrice.toString().split("\\.")[1].length() > 2) {
             totalPrice = totalPrice.add(new BigDecimal("0.01"));
+            System.out.println("PRICE AFTER ADDING 0.01 " + totalPrice);
             totalPrice = new BigDecimal(totalPrice.toString().substring(0,
-                   totalPrice.toString().length() - 2));
+                   totalPrice.toString().length() - cutExtraSymbolsInPrice(totalPrice.toString())));
         }
 
-        return new BigDecimal(totalPrice.toString().substring(0, totalPrice.toString().length()-2));
+        System.out.println("PRICE AFTER CUTTING " + totalPrice);
+        return totalPrice;
+    }
+
+    private static int cutExtraSymbolsInPrice(String price) {
+        int amountOfSymbols = 0;
+        int amountOfSymbolAfterDotInPrice = price.split("\\.")[1].length();
+
+        for (; amountOfSymbols < amountOfSymbolAfterDotInPrice - 2; amountOfSymbols++) {}
+
+        System.out.println("Amount of symbols to cut off " + amountOfSymbols);
+        return amountOfSymbols;
     }
 }

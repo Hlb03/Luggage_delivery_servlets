@@ -8,10 +8,11 @@ package org.luggage_delivery.web.command;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public abstract class Command {
 
-    public abstract String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException;
+    public abstract String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 
     @Override
     public String toString() {
