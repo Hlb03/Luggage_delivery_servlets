@@ -112,7 +112,8 @@
                 </c:when>
                 <c:when test="${requestScope.currentPage ne 1}">
                     <li class="page-item">
-                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&route-change=false&tariff-change=false"
+<%--                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&row=${requestScope.row}&route-change=false&tariff-change=false"--%>
+                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&tariffDir=${requestScope.tariffDir}&row=${requestScope.row}&routeDir=${requestScope.routeDir}&col=${requestScope.col}&route-change=false&tariff-change=false"
                            tabindex="-1">Previous</a>
                     </li>
                 </c:when>
