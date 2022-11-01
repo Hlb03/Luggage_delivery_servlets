@@ -52,7 +52,10 @@ public class FrontServlet extends HttpServlet {
         String cmdName = req.getParameter("cmd");
         LOG.debug(cmdName);
         Command command = container.getCommand(cmdName);
-        if (command == null)
+
+        if (req.getParameter("priceCalculateButton") != null)
+            command = container.getCommand("calculate-price");
+        else if (command == null)
             command = container.getCommand("404");
 
         return command.executeCommand(req, resp);

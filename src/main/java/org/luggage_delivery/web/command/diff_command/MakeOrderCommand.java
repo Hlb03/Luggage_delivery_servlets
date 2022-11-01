@@ -26,12 +26,20 @@ public class MakeOrderCommand extends Command {
             Session session = HibernateUtil.getSessionFactory().openSession();
             RouteService routeService = new RouteServiceImpl(new RouteDAOImpl(session));
             long totalAmountOfRouts = routeService.getRoutesAmount();
-            System.out.println("TOTAL AMOUNT OF ROUTES - " + totalAmountOfRouts);
             List<Route> routes = routeService.getAllRoutes(1, (int) totalAmountOfRouts, "distance", "asc");
 
             session.close();
 
             req.setAttribute("allRoutes", routes);
+
+            req.setAttribute("sizeParam", req.getParameter("size"));
+            req.setAttribute("typeParam", req.getParameter("type"));
+            req.setAttribute("weightParam", req.getParameter("weight"));
+            req.setAttribute("delDateParam", req.getParameter("del-date"));
+            req.setAttribute("addressParam", req.getParameter("address"));
+            req.setAttribute("routeParam", req.getParameter("route"));
+            req.setAttribute("optionParam", req.getParameter("option"));
+            req.setAttribute("totalPrice", req.getParameter("totalPrice"));
 
         } catch (DataBaseException e) {
             e.printStackTrace();

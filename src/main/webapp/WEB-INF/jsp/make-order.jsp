@@ -53,9 +53,6 @@
                         </li>
                     </c:when>
                 </c:choose>
-                <%--                <li class="nav-item">--%>
-                <%--                    <a class="nav-link disabled" href="#">View my orders</a>--%>
-                <%--                </li>--%>
             </ul>
             <c:choose>
                 <c:when test="${sessionScope.user eq null}">
@@ -78,7 +75,16 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  -->
 <body>
 <div class="container">
-    <div class="title">ORDER</div>
+    <!--  &nbsp; -- means one space in html -->
+    <div class="title">ORDER
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+<%--                        Total price - 330.12--%>
+        <c:if test="${requestScope.totalPrice ne null}">
+            Total price - ${requestScope.totalPrice}
+        </c:if>
+    </div>
     <div class="content">
         <form action="Luggage-delivery" method="post">
             <input type="hidden" name="cmd" value="order-process">
@@ -86,31 +92,41 @@
                 <div class="input-box">
                     <span class="details">Size</span>
                     <input type="number" name="luggage-size" min="5" step="0.01" placeholder="Enter luggage volume"
+                           value="${requestScope.sizeParam}"
                            required>
                 </div>
                 <div class="input-box">
                     <span class="details">Type</span>
                     <input type="text" name="luggage-type" placeholder="Enter category" pattern="[A-Z]+"
-                           title="SPORT" required>
+                           title="SPORT" value="${requestScope.typeParam}" required>
                 </div>
                 <div class="input-box">
                     <span class="details">Weight</span>
                     <input type="number" name="luggage-weight" min="0.2" step="0.01" placeholder="Enter weight"
-                           required>
+                           value="${requestScope.weightParam}" required>
                 </div>
                 <div class="input-box">
                     <span class="details">Choose the route</span>
                     <select name="routeId">
                         <optgroup label="START POINT - FINAL POINT">
                             <c:forEach items="${requestScope.allRoutes}" var="route">
-                                <option value="${route.id}">${route.startPoint} - ${route.destinationPoint}</option>
+                                <c:choose>
+                                    <c:when test="${requestScope.routeParam eq route.id}">
+                                        <option value="${route.id}" selected>${route.startPoint} - ${route.destinationPoint}</option>
+                                    </c:when>
+                                    <c:when test="${requestScope.routeParam ne route.id}">
+                                        <option value="${route.id}">${route.startPoint} - ${route.destinationPoint}</option>
+                                    </c:when>
+                                </c:choose>
                             </c:forEach>
                         </optgroup>
                     </select>
                 </div>
                 <div class="input-box">
                     <span class="details">Delivery date</span>
-                    <input type="date" name="luggage-del-date" placeholder="Enter the date" id="minDate" min="">
+                    <input type="date" name="luggage-del-date" placeholder="Enter the date"
+                           value="${requestScope.delDateParam}" id="minDate">
+<%--                    value="${requestScope.delDateParam}"--%>
                     <script>
                         var today = new Date().toISOString().split('T')[0];
                         document.getElementsByName("luggage-del-date")[0].setAttribute('min', today);
@@ -118,27 +134,50 @@
                 </div>
                 <div class="input-box">
                     <span class="details">Address</span>
-                    <input type="text" name="delivery-address" placeholder="Enter address" required>
+                    <input type="text" name="delivery-address" placeholder="Enter address" value="${requestScope.addressParam}"
+                           required>
                 </div>
             </div>
 
             <div class="gender-details">
-                <input type="radio" name="option" value="None" id="dot-1" checked>
-                <input type="radio" name="option" value="Fragile" id="dot-2">
-                <span class="gender-title">Special option</span>
-                <div class="category">
-                    <label for="dot-1">
-                        <span class="dot one"></span>
-                        <span class="option">None</span>
-                    </label>
-                    <label for="dot-2">
-                        <span class="dot two"></span>
-                        <span class="option">Fragile</span>
-                    </label>
-                </div>
+                <c:choose>
+                    <c:when test="${requestScope.optionParam eq 'Fragile'}">
+                        <input type="radio" name="option" value="None" id="dot-1">
+                        <input type="radio" name="option" value="Fragile" id="dot-2" checked>
+                        <span class="gender-title">Special option</span>
+                        <div class="category">
+                            <label for="dot-1">
+                                <span class="dot one"></span>
+                                <span class="option">None</span>
+                            </label>
+                            <label for="dot-2">
+                                <span class="dot two"></span>
+                                <span class="option">Fragile</span>
+                            </label>
+                        </div>
+                    </c:when>
+                    <c:when test="${requestScope.optionPram ne 'Fragile'}">
+                        <input type="radio" name="option" value="None" id="dot-1" checked>
+                        <input type="radio" name="option" value="Fragile" id="dot-2">
+                        <span class="gender-title">Special option</span>
+                        <div class="category">
+                            <label for="dot-1">
+                                <span class="dot one"></span>
+                                <span class="option">None</span>
+                            </label>
+                            <label for="dot-2">
+                                <span class="dot two"></span>
+                                <span class="option">Fragile</span>
+                            </label>
+                        </div>
+                    </c:when>
+                </c:choose>
             </div>
             <div class="button">
-                <input type="submit" value="Make an order">
+                <input type="submit" name="orderButton" value="Make an order" style="margin-bottom: 5px">
+                <form method="post" action="Luggage-delivery">
+                    <input type="submit" name="priceCalculateButton" value="Calculate price">
+                </form>
             </div>
         </form>
     </div>

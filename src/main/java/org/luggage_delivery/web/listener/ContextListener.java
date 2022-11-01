@@ -40,6 +40,7 @@ public class ContextListener implements ServletContextListener {
         Command orderProcessCommand = new OrderProcessCommand();
         Command checkAuthorizationCommand = new AuthorizationCommand();
         Command userAccountCommand = new UserAccountCommand();
+        Command priceCalculation = new OrderPriceCalculationCommand();
         Command logoutCommand = new SignOutCommand();
 
         container.addCommand(null, mainMenuCommand);
@@ -47,6 +48,7 @@ public class ContextListener implements ServletContextListener {
         container.addCommand("menu", mainMenuCommand);
         container.addCommand("make-order", makeOrderCommand);
         container.addCommand("order-process", orderProcessCommand);
+        container.addCommand("calculate-price", priceCalculation);
         container.addCommand("authorize", authorizeCommand);
         container.addCommand("logout", logoutCommand);
         container.addCommand("user-check", checkAuthorizationCommand);

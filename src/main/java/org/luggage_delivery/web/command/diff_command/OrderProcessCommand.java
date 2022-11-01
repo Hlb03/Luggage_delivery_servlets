@@ -18,7 +18,6 @@ import org.luggage_delivery.service.service_impls.DeliveryServiceImpl;
 import org.luggage_delivery.service.service_impls.DeliveryStatusServiceImpl;
 import org.luggage_delivery.service.service_impls.RouteServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
-import org.luggage_delivery.util.PriceCalculationUtil;
 import org.luggage_delivery.web.command.Command;
 
 import javax.servlet.ServletException;
@@ -27,17 +26,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 
 import static org.luggage_delivery.util.PriceCalculationUtil.calculateGeneralPrice;
 
 public class OrderProcessCommand extends Command {
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-
-        ResourceBundle rs = ResourceBundle.getBundle("all-tariffs");
-        System.out.println(rs.getString("distance"));
-
 
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
