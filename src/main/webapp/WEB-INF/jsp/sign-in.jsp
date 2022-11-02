@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="${pageContext.request.contextPath}/Luggage-delivery">Home</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/Luggage-delivery">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link"
@@ -92,11 +92,11 @@
                             </form>
                         </div>
                         <div>
-                            <p class="mb-0">Don't have an account? <a href="#!" class="text-white-50 fw-bold">Sign
-                                Up</a>
+                            <p class="mb-0">Don't have an account?
+                                <a href="${pageContext.request.contextPath}/Luggage-delivery?cmd=registrate"
+                                   class="text-white-50 fw-bold">Sign Up</a>
                             </p>
                         </div>
-
                     </div>
                 </div>
             </div>
