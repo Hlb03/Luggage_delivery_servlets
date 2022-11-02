@@ -42,6 +42,7 @@ public class ContextListener implements ServletContextListener {
         Command userAccountCommand = new UserAccountCommand();
         Command priceCalculation = new OrderPriceCalculationCommand();
         Command logoutCommand = new SignOutCommand();
+        Command registrationCommand = new RegistrationCommand();
 
         container.addCommand(null, mainMenuCommand);
         container.addCommand("", mainMenuCommand);
@@ -54,6 +55,7 @@ public class ContextListener implements ServletContextListener {
         container.addCommand("user-check", checkAuthorizationCommand);
         container.addCommand("user-room", userAccountCommand);
         container.addCommand("404", pageNotFoundCommand);
+        container.addCommand("registrate", registrationCommand);
 
         context.setAttribute("commandContainer", container);
         LOG.debug("Set attribute 'commandContainer' to context - " + container);
