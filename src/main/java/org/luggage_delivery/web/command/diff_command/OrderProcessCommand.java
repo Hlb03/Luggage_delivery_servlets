@@ -9,14 +9,17 @@ import org.hibernate.Session;
 import org.luggage_delivery.dao.dao_implementations.DeliveryDAOImpl;
 import org.luggage_delivery.dao.dao_implementations.DeliveryStatusDAOImpl;
 import org.luggage_delivery.dao.dao_implementations.RouteDAOImpl;
+import org.luggage_delivery.dao.dao_implementations.UserDAOImpl;
 import org.luggage_delivery.entity.*;
 import org.luggage_delivery.exceptions.DataBaseException;
 import org.luggage_delivery.service.DeliveryService;
 import org.luggage_delivery.service.DeliveryStatusService;
 import org.luggage_delivery.service.RouteService;
+import org.luggage_delivery.service.UserService;
 import org.luggage_delivery.service.service_impls.DeliveryServiceImpl;
 import org.luggage_delivery.service.service_impls.DeliveryStatusServiceImpl;
 import org.luggage_delivery.service.service_impls.RouteServiceImpl;
+import org.luggage_delivery.service.service_impls.UserServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.web.command.Command;
 
@@ -38,16 +41,14 @@ public class OrderProcessCommand extends Command {
 
         DeliveryStatusService deliveryService = new DeliveryStatusServiceImpl(new DeliveryStatusDAOImpl(session));
         RouteService routeService = new RouteServiceImpl(new RouteDAOImpl(session));
+        UserService userService = new UserServiceImpl(new UserDAOImpl(session));
         DeliveryService deliveryServ = new DeliveryServiceImpl(new DeliveryDAOImpl(session));
 
-        //TEMP OPTION
-        User user = new User();
-        user.setId(2);
 
         try {
             DeliveryStatus status = deliveryService.getStatusByName("PROCESSING");
             Route route = routeService.getById(Integer.parseInt(req.getParameter("routeId")));
-            System.out.println(status + " " + route);
+            User user = userService.getById((int) req.getSession().getAttribute("user"));
 
             Delivery delivery = new Delivery();
             delivery.setSize(new BigDecimal(req.getParameter("luggage-size")));
