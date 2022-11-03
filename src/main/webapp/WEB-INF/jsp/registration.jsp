@@ -6,6 +6,10 @@
     <title>Registration</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
 
+    <script type="text/javascript">
+        <%@include file="/WEB-INF/js/check-password-verify.js"%>
+    </script>
+
     <style>
         <%@include file="../css/registration.css"%>
     </style>
@@ -50,39 +54,75 @@
                                 <input type="hidden" name="cmd" value="addNewUser">
                                 <div class="form-outline mb-4">
                                     <input type="text" class="form-control form-control-lg"
-                                           placeholder="Your first name" required/>
+                                           name="firstName"
+                                           pattern="[a-zA-zа-яА-Я ]{2,20}"
+                                           title="First letter should be capital. Example - Alina"
+<%--                                            <c:choose>--%>
+<%--                                                <c:when test="${requestScope.firstName ne null}">--%>
+                                                    value="${requestScope.firstName}"
+<%--                                                </c:when>--%>
+<%--                                            </c:choose>--%>
+                                           placeholder="Your first name"
+                                           required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <input type="text" class="form-control form-control-lg"
+                                           name="lastName"
+                                           pattern="[a-zA-zа-яА-Я -]{2,20}"
+                                           title="First letter should be capital. Example - Brave"
+                                           value="${requestScope.lastName}"
                                            placeholder="Your last name" required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <input type="email" class="form-control form-control-lg"
-                                           placeholder="Your email" required/>
+                                           name="email"
+                                           maxlength="40"
+                                            <c:choose>
+                                                <c:when test="${requestScope.email eq null}">
+                                                    placeholder="Your email"
+                                                </c:when>
+                                                <c:when test="${requestScope.email ne null}">
+                                                    value="${requestScope.email} is already registered"
+                                                    style="border: 2px solid red"
+                                                </c:when>
+                                            </c:choose>
+                                           required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <input type="password" class="form-control form-control-lg"
+                                           name="password"
+                                           id="pas1"
+                                           minlength="4" maxlength="30"
+                                           onkeyup='PassCheck();'
+                                           value="${requestScope.pas1}"
                                            placeholder="Enter your password" required/>
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <input type="password" class="form-control form-control-lg"
+                                           name="password2"
+                                           id="pas2"
+                                           minlength="4" maxlength="30"
+                                           onkeyup='PassCheck();'
+                                           value="${requestScope.pas2}"
                                            placeholder="Repeat your password" required/>
                                 </div>
 
                                 <div class="form-check d-flex justify-content-center mb-5">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg"/>
+                                    <input class="form-check-input me-2" type="checkbox"
+                                           onchange="document.getElementById('registrateBtn').disabled = !this.checked;"
+                                           value="" id="form2Example3cg"/>
                                     <label class="form-check-label" for="form2Example3cg">
                                         I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
                                     </label>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <input type="submit"
+                                    <input type="submit" id="registrateBtn"
                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
-                                           value="Registrate">
+                                           value="Registrate" disabled>
                                 </div>
 
                                 <p class="text-center text-muted mt-5 mb-0">Have already an account?
