@@ -39,6 +39,7 @@ public class AuthorizationCommand extends Command {
 
             session.close();
             req.getSession().setAttribute("user", user.getId());
+            req.getSession().setAttribute("userRole", user.getRole().getRoleName());
         } catch (DataBaseException e) {
             e.printStackTrace();
         } catch (UserNotExistsException e) {
