@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 public class PaginationUtil {
 
-    public static int[] getDefaultPaginationData(HttpServletRequest req, int totalDataAmount) {
+    public static int[] getDefaultRoutePaginationData(HttpServletRequest req, int totalDataAmount) {
         int page;
 
         ResourceBundle rb = ResourceBundle.getBundle("pagination");
@@ -28,4 +28,23 @@ public class PaginationUtil {
 
         return new int[]{page, amountOfRoutesOnPage, totalPages};
     }
+
+    public static int[] getDefaultUserOrderPaginationData(HttpServletRequest req, int totalAmount) {
+        int page;
+
+        ResourceBundle rb = ResourceBundle.getBundle("pagination");
+        int amountOfOrderPerPage = Integer.parseInt(rb.getString("user-room.order"));
+
+        if (req.getParameter("page") == null)
+            page = 1;
+        else page = Integer.parseInt(req.getParameter("page"));
+
+        int totalPages = totalAmount/amountOfOrderPerPage;
+        if (totalAmount % amountOfOrderPerPage != 0)
+            totalPages++;
+
+        return new int[]{page, amountOfOrderPerPage, totalPages};
+    }
+
+
 }
