@@ -37,10 +37,16 @@
                                href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my orders</a>
                         </li>
                     </c:when>
-                    <c:when test="${sessionScope.user ne null}">
+                    <c:when test="${sessionScope.user ne null && sessionScope.userRole eq 'USER'}">
                         <li class="nav-item">
                             <a class="nav-link"
                                href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my orders</a>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.user ne null && sessionScope.userRole eq 'MANAGER'}">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=manager-room">View customer orders</a>
                         </li>
                     </c:when>
                 </c:choose>
