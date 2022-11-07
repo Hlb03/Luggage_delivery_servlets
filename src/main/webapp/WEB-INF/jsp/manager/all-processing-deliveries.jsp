@@ -33,6 +33,10 @@
                        href="${pageContext.request.contextPath}/Luggage-delivery?cmd=manager-room">View customer
                         orders</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href="${pageContext.request.contextPath}/Luggage-delivery?cmd=report-view">Reports</a>
+                </li>
             </ul>
             <c:choose>
             <c:when test="${sessionScope.user eq null}">
@@ -43,7 +47,7 @@
                 </c:when>
                 <c:when test="${sessionScope.user ne null}">
                 <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery" method="post"
-                      style="position: relative; left: 1050px">
+                      style="position: relative; left: 1030px">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign out</button>
                     <input type="hidden" name="cmd" value="logout">
                     </c:when>
