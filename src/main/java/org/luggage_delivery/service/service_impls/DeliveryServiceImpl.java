@@ -9,6 +9,7 @@ import org.luggage_delivery.dao.dao_interfaces.DeliveryDAO;
 import org.luggage_delivery.entity.Delivery;
 import org.luggage_delivery.entity.DeliveryStatus;
 import org.luggage_delivery.entity.Route;
+import org.luggage_delivery.entity.User;
 import org.luggage_delivery.exceptions.DataBaseException;
 import org.luggage_delivery.service.DeliveryService;
 
@@ -33,11 +34,29 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    public long getUserDeliveriesAmount(User user) throws DataBaseException {
+        try {
+            return deliveryDAO.getUserDeliveriesAmount(user);
+        } catch (Exception e) {
+            throw new DataBaseException();
+        }
+    }
+
+    @Override
     public List<Delivery> getAll() throws DataBaseException {
         try {
             return deliveryDAO.getAll();
         } catch (Exception e) {
             throw new DataBaseException("Failed to get all deliveries", e);
+        }
+    }
+
+    @Override
+    public List<Delivery> getAllUserDeliveries(User user, int page, int dataAmount) throws DataBaseException {
+        try {
+             return deliveryDAO.getUserDeliveries(user, page, dataAmount);
+        } catch (Exception e) {
+            throw new DataBaseException("Failed to get user with id " + user.getId() + " deliveries", e);
         }
     }
 

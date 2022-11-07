@@ -10,6 +10,7 @@ import org.luggage_delivery.dao.dao_interfaces.DeliveryDAO;
 import org.luggage_delivery.entity.Delivery;
 import org.luggage_delivery.entity.DeliveryStatus;
 import org.luggage_delivery.entity.Route;
+import org.luggage_delivery.entity.User;
 import org.luggage_delivery.util.UpdateUtil;
 
 import java.sql.Date;
@@ -31,6 +32,25 @@ public class DeliveryDAOImpl implements DeliveryDAO {
     @Override
     public List<Delivery> getAll() {
         return session.createQuery("SELECT dl FROM Delivery dl", Delivery.class).list();
+    }
+
+    @Override
+    public List<Delivery> getUserDeliveries(User user, int page, int dataAmount) {
+        int firstData = page * dataAmount - dataAmount;
+
+        return session.createQuery("SELECT dl FROM Delivery dl WHERE dl.user.id =: id ORDER BY dl.deliveryStatus.id DESC",
+                        Delivery.class)
+                .setParameter("id", user.getId())
+                .setFirstResult(firstData)
+                .setMaxResults(dataAmount)
+                .list();
+    }
+
+    @Override
+    public long getUserDeliveriesAmount(User user) {
+        return (long) session.createQuery("SELECT COUNT(*) FROM Delivery d WHERE d.user.id =: id")
+                .setParameter("id", user.getId())
+                .uniqueResult();
     }
 
     @Override
