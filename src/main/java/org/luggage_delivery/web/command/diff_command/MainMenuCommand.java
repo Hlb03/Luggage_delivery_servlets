@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import static org.luggage_delivery.util.PaginationUtil.getDefaultPaginationData;
+import static org.luggage_delivery.util.PaginationUtil.getDefaultRoutePaginationData;
 
 public class MainMenuCommand extends Command {
     @Override
@@ -59,10 +59,9 @@ public class MainMenuCommand extends Command {
 
             TariffService tariffService = new TariffServiceImpl(new TariffDAOImpl(session));
             RouteService routeService = new RouteServiceImpl(new RouteDAOImpl(session));
-//            int totalAmountOfRoutes = (int) routeService.getRoutesAmount();
             List<Tariff> tariffs = tariffService.getTariffs(row, tariffDir);
 
-            int[] paginationSetting = getDefaultPaginationData(req, (int) routeService.getRoutesAmount());
+            int[] paginationSetting = getDefaultRoutePaginationData(req, (int) routeService.getRoutesAmount());
 
             List<Route> routes = routeService.getAllRoutes(paginationSetting[0], paginationSetting[1], col, routeDir);
 

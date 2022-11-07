@@ -63,7 +63,7 @@ public class OrderProcessCommand extends Command {
             delivery.setTotalPrice(calculateGeneralPrice(delivery, req.getParameter("option")));
 
             System.out.println("DELIVERY PARAMS " + delivery);
-//            deliveryServ.addDelivery(delivery);
+            deliveryServ.addDelivery(delivery);
             session.getTransaction().commit();
             session.close();
 
