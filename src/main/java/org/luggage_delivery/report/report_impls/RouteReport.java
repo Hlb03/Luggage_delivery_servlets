@@ -6,8 +6,11 @@ package org.luggage_delivery.report.report_impls;
 */
 
 import org.luggage_delivery.dao.dao_interfaces.DeliveryDAO;
+import org.luggage_delivery.entity.Delivery;
 import org.luggage_delivery.entity.Route;
 import org.luggage_delivery.report.DeliveryReport;
+
+import java.util.List;
 
 public class RouteReport implements DeliveryReport {
 
@@ -18,7 +21,7 @@ public class RouteReport implements DeliveryReport {
     }
 
     @Override
-    public void createReport(Object reportObject) {
-        System.out.println(deliveryDAO.getByRoute((Route) reportObject));
+    public List<Delivery> createReport(Object reportObject) {
+        return deliveryDAO.getByRoute((Route) reportObject);
     }
 }

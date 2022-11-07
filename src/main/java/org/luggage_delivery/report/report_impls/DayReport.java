@@ -6,9 +6,11 @@ package org.luggage_delivery.report.report_impls;
 */
 
 import org.luggage_delivery.dao.dao_interfaces.DeliveryDAO;
+import org.luggage_delivery.entity.Delivery;
 import org.luggage_delivery.report.DeliveryReport;
 
 import java.sql.Date;
+import java.util.List;
 
 public class DayReport implements DeliveryReport {
 
@@ -19,7 +21,7 @@ public class DayReport implements DeliveryReport {
     }
 
     @Override
-    public void createReport(Object reportObject) {
-        System.out.println(deliveryDAO.getByDeliveryDate((Date) reportObject));
+    public List<Delivery> createReport(Object reportObject) {
+        return deliveryDAO.getByDeliveryDate((Date) reportObject);
     }
 }

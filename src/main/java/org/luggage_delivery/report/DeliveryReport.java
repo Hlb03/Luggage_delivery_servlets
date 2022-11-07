@@ -1,6 +1,10 @@
 package org.luggage_delivery.report;
 
+import org.luggage_delivery.entity.Delivery;
+
+import java.util.List;
+
 public interface DeliveryReport {
 
-    void createReport(Object reportObject);
+    List<Delivery> createReport(Object reportObject);
 }
