@@ -6,7 +6,9 @@ package org.luggage_delivery.web.listener;
 */
 
 import org.luggage_delivery.web.command.diff_command.*;
+import org.luggage_delivery.web.command.diff_command.manager_commands.CreateReportsCommand;
 import org.luggage_delivery.web.command.diff_command.manager_commands.ManagerOrderProcessCommand;
+import org.luggage_delivery.web.command.diff_command.manager_commands.ReportViewCommand;
 import org.luggage_delivery.web.command.diff_command.manager_commands.ViewUsersOrdersCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,8 @@ public class ContextListener implements ServletContextListener {
         Command payOrderCommand = new PayOrderCommand();
         Command managerViewUsersOrders = new ViewUsersOrdersCommand();
         Command managerOrderProcessCommand = new ManagerOrderProcessCommand();
+        Command viewReportCommand = new ReportViewCommand();
+        Command createReportCommand = new CreateReportsCommand();
 
         container.addCommand(null, mainMenuCommand);
         container.addCommand("", mainMenuCommand);
@@ -68,6 +72,8 @@ public class ContextListener implements ServletContextListener {
         container.addCommand("payOrder", payOrderCommand);
         container.addCommand("manager-room", managerViewUsersOrders);
         container.addCommand("changeStatus", managerOrderProcessCommand);
+        container.addCommand("report-view", viewReportCommand);
+        container.addCommand("make-report", createReportCommand);
 
         context.setAttribute("commandContainer", container);
         LOG.debug("Set attribute 'commandContainer' to context - " + container);
