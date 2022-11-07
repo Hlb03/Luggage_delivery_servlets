@@ -26,46 +26,66 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="${pageContext.request.contextPath}/Luggage-delivery">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="${pageContext.request.contextPath}/Luggage-delivery?cmd=make-order">Make order</a>
-                </li>
+                <c:choose>
+                    <c:when test="${sessionScope.userRole ne 'MANAGER'}">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=make-order">Make order</a>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.userRole eq 'MANAGER'}">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=manager-room">View customer
+                                orders</a>
+                        </li>
+                    </c:when>
+                </c:choose>
                 <c:choose>
                     <c:when test="${sessionScope.user eq null}">
                         <li class="nav-item">
                             <a class="nav-link disabled"
-                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my orders</a>
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my
+                                orders</a>
                         </li>
                     </c:when>
                     <c:when test="${sessionScope.user ne null && sessionScope.userRole eq 'USER'}">
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my orders</a>
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=user-room">View my
+                                orders</a>
                         </li>
                     </c:when>
                     <c:when test="${sessionScope.user ne null && sessionScope.userRole eq 'MANAGER'}">
                         <li class="nav-item">
                             <a class="nav-link"
-                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=manager-room">View customer orders</a>
+                               href="${pageContext.request.contextPath}/Luggage-delivery?cmd=report-view">Reports</a>
                         </li>
                     </c:when>
                 </c:choose>
             </ul>
-                <c:choose>
-                    <c:when test="${sessionScope.user eq null}">
-                        <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery"
+            <c:choose>
+            <c:when test="${sessionScope.user eq null}">
+            <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery"
+                  style="position: relative; left: 1050px">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
+                <input type="hidden" name="cmd" value="authorize"><br>
+                </c:when>
+                <c:when test="${sessionScope.user ne null}">
+                <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery" method="post"
+                        <c:choose>
+                            <c:when test="${sessionScope.userRole eq 'MANAGER'}">
+                                style="position: relative; left: 1030px">
+                            </c:when>
+                            <c:otherwise>
                                 style="position: relative; left: 1050px">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
-                        <input type="hidden" name="cmd" value="authorize"><br>
+                            </c:otherwise>
+                        </c:choose>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign out</button>
+                    <input type="hidden" name="cmd" value="logout">
                     </c:when>
-                    <c:when test="${sessionScope.user ne null}">
-                        <form class="form-inline mt-2 mt-md-0" action="Luggage-delivery" method="post"
-                              style="position: relative; left: 1050px">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign out</button>
-                        <input type="hidden" name="cmd" value="logout">
-                    </c:when>
-                </c:choose>
-            </form>
+                    </c:choose>
+                </form>
         </div>
     </nav>
 </header>
@@ -78,7 +98,7 @@
     <div class="row" style="background-color: lightblue; text-align: center">
         <div style="font-size: 20px" class="col-6">
             <a href="Luggage-delivery?page=${requestScope.currentPage}&tariffDir=${requestScope.tariffDir}&row=type&route-change=false&col=${requestScope.col}&routeDir=${requestScope.routeDir}"
-                style="color: black">NAME</a></div>
+               style="color: black">NAME</a></div>
         <div style="font-size: 20px" class="col-6">
             <a href="Luggage-delivery?page=${requestScope.currentPage}&tariffDir=${requestScope.tariffDir}&row=price&route-change=false&col=${requestScope.col}&routeDir=${requestScope.routeDir}"
                style="color: black">MULTIPLICATION FACTOR</a></div>
@@ -118,21 +138,23 @@
                 </c:when>
                 <c:when test="${requestScope.currentPage ne 1}">
                     <li class="page-item">
-<%--                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&row=${requestScope.row}&route-change=false&tariff-change=false"--%>
-                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&tariffDir=${requestScope.tariffDir}&row=${requestScope.row}&routeDir=${requestScope.routeDir}&col=${requestScope.col}&route-change=false&tariff-change=false"
+                            <%--                        <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage - 1}&row=${requestScope.row}&route-change=false&tariff-change=false"--%>
+                        <a class="page-link"
+                           href="Luggage-delivery?page=${requestScope.currentPage - 1}&tariffDir=${requestScope.tariffDir}&row=${requestScope.row}&routeDir=${requestScope.routeDir}&col=${requestScope.col}&route-change=false&tariff-change=false"
                            tabindex="-1">Previous</a>
                     </li>
                 </c:when>
             </c:choose>
-<%--            <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
-<%--            <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
-<%--            <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+            <%--            <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+            <%--            <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
+            <%--            <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
             <c:choose>
                 <c:when test="${requestScope.currentPage lt requestScope.totalPages}">
-                <li class="page-item">
-                    <a class="page-link" href="Luggage-delivery?page=${requestScope.currentPage + 1}&tariffDir=${requestScope.tariffDir}&row=${requestScope.row}&routeDir=${requestScope.routeDir}&col=${requestScope.col}&route-change=false&tariff-change=false">
-                        Next</a>
-                </li>
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="Luggage-delivery?page=${requestScope.currentPage + 1}&tariffDir=${requestScope.tariffDir}&row=${requestScope.row}&routeDir=${requestScope.routeDir}&col=${requestScope.col}&route-change=false&tariff-change=false">
+                            Next</a>
+                    </li>
                 </c:when>
                 <c:when test="${requestScope.currentPage eq requestScope.totalPages}">
                     <li class="page-item disabled">
