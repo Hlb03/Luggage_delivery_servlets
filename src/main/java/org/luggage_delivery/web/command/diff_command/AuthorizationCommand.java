@@ -15,6 +15,8 @@ import org.luggage_delivery.service.UserService;
 import org.luggage_delivery.service.service_impls.UserServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.web.command.Command;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,9 @@ import java.io.IOException;
 import static org.luggage_delivery.validation.authorize.ValidateUser.validateUserData;
 
 public class AuthorizationCommand extends Command {
+
+    private final static Logger LOG = LoggerFactory.getLogger(AuthorizationCommand.class);
+
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String emailInput = req.getParameter("userEmail");
@@ -43,11 +48,11 @@ public class AuthorizationCommand extends Command {
         } catch (DataBaseException e) {
             e.printStackTrace();
         } catch (UserNotExistsException e) {
-            System.out.println("User not exists");
+            LOG.debug("User not exists");
             req.setAttribute("emailException", "Incorrect email");
             req.getRequestDispatcher("WEB-INF/jsp/sign-in.jsp").forward(req, resp);
         } catch (IncorrectPasswordException e) {
-            System.out.println("Incorrect password");
+            LOG.debug("Incorrect password inputted");
             req.setAttribute("userEmail", emailInput);
             req.setAttribute("passwordException", "Incorrect password");
             req.getRequestDispatcher("WEB-INF/jsp/sign-in.jsp").forward(req, resp);

@@ -17,6 +17,9 @@ import org.luggage_delivery.service.service_impls.RouteServiceImpl;
 import org.luggage_delivery.service.service_impls.TariffServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.web.command.Command;
+import org.luggage_delivery.web.command.diff_command.manager_commands.ViewUsersOrdersCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +29,9 @@ import java.util.List;
 import static org.luggage_delivery.util.PaginationUtil.getDefaultRoutePaginationData;
 
 public class MainMenuCommand extends Command {
+
+    private final static Logger LOG = LoggerFactory.getLogger(ViewUsersOrdersCommand.class);
+
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
 
@@ -65,11 +71,11 @@ public class MainMenuCommand extends Command {
 
             List<Route> routes = routeService.getAllRoutes(paginationSetting[0], paginationSetting[1], col, routeDir);
 
-            System.out.println("TOTALLY NEEDED " + paginationSetting[2] + " TO DISPLAY " + paginationSetting[1] + " ROUTES");
+            LOG.debug("TOTALLY NEEDED " + paginationSetting[2] + " TO DISPLAY " + paginationSetting[1] + " ROUTES");
             session.getTransaction().commit();
             session.close();
 
-            System.out.println(routes);
+            LOG.debug(String.valueOf(routes));
             req.setAttribute("allTariffs", tariffs);
             req.setAttribute("allRoutes", routes);
 

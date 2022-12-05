@@ -17,6 +17,8 @@ import org.luggage_delivery.service.service_impls.DeliveryServiceImpl;
 import org.luggage_delivery.service.service_impls.DeliveryStatusServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.web.command.Command;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +28,10 @@ import java.util.List;
 
 public class ViewUsersOrdersCommand extends Command {
 
+    private final static Logger LOG = LoggerFactory.getLogger(ViewUsersOrdersCommand.class);
+
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("IN MANAGER COMMAND");
-
         Session session = HibernateUtil.getSessionFactory().openSession();
         DeliveryService deliveryService = new DeliveryServiceImpl(new DeliveryDAOImpl(session));
         DeliveryStatusService deliveryStatusService = new DeliveryStatusServiceImpl(new DeliveryStatusDAOImpl(session));
@@ -38,7 +40,7 @@ public class ViewUsersOrdersCommand extends Command {
             DeliveryStatus status = deliveryStatusService.getStatusByName("PROCESSING");
             List<Delivery> deliveryWithProcessingStatus = deliveryService.getDeliveryByStatus(status);
 
-            System.out.println("DELIVERY WITH STATUS 'PROCESSING' " + deliveryWithProcessingStatus);
+            LOG.debug("DELIVERY WITH STATUS 'PROCESSING' " + deliveryWithProcessingStatus);
             req.setAttribute("processDeliveries", deliveryWithProcessingStatus);
         } catch (DataBaseException ex) {
             ex.printStackTrace();

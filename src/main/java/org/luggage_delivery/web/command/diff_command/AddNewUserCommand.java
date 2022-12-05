@@ -19,6 +19,9 @@ import org.luggage_delivery.service.service_impls.UserServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.validation.registration.CheckUserDataBeforeRegistration;
 import org.luggage_delivery.web.command.Command;
+import org.luggage_delivery.web.command.diff_command.manager_commands.ViewUsersOrdersCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +31,10 @@ import java.math.BigDecimal;
 
 public class AddNewUserCommand extends Command {
 
+    private final static Logger LOG = LoggerFactory.getLogger(AddNewUserCommand.class);
+
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("INSIDE ADD NEW USER COMMAND");
-
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         RoleService roleService = new RoleServiceImpl(new RoleDAOImpl(session));
@@ -52,7 +55,7 @@ public class AddNewUserCommand extends Command {
 
             userService.addUser(user);
         } catch (UserAlreadyExistsException ex) {
-            System.out.println(ex.getMessage());
+            LOG.debug(ex.getMessage());
             req.setAttribute("firstName", req.getParameter("firstName"));
             req.setAttribute("lastName", req.getParameter("lastName"));
             req.setAttribute("email", req.getParameter("email"));

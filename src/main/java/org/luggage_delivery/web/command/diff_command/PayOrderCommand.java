@@ -32,7 +32,6 @@ public class PayOrderCommand extends Command {
 
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("IN PAY ORDER COMMAND");
         Session session = HibernateUtil.getSessionFactory().openSession();
         DeliveryService deliveryService = new DeliveryServiceImpl(new DeliveryDAOImpl(session));
         DeliveryStatusService deliveryStatusService = new DeliveryStatusServiceImpl(new DeliveryStatusDAOImpl(session));
@@ -49,10 +48,6 @@ public class PayOrderCommand extends Command {
 
             userService.updateUser(user.getId(), user);
             deliveryService.updateDelivery(delivery.getId(), delivery);
-
-            //            System.out.println(status);
-//            System.out.println(user);
-//            System.out.println(delivery);
 
             session.getTransaction().commit();
             session.close();

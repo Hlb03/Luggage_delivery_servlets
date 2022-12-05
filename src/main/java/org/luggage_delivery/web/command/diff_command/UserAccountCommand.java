@@ -17,6 +17,9 @@ import org.luggage_delivery.service.service_impls.DeliveryServiceImpl;
 import org.luggage_delivery.service.service_impls.UserServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.web.command.Command;
+import org.luggage_delivery.web.command.diff_command.manager_commands.ViewUsersOrdersCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +32,8 @@ import static org.luggage_delivery.util.PaginationUtil.getDefaultUserOrderPagina
 
 public class UserAccountCommand extends Command {
 
+    private final static Logger LOG = LoggerFactory.getLogger(UserAccountCommand.class);
+
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -37,12 +42,11 @@ public class UserAccountCommand extends Command {
 
         try {
             User user = userService.getById((int) req.getSession().getAttribute("user"));
-//            System.out.println("TOTAL AMOUNT OF USER ORDERS: " + deliveryService.getUserDeliveriesAmount(user));
 
             int[] paginationUtil = getDefaultUserOrderPaginationData(req,
                             (int) deliveryService.getUserDeliveriesAmount(user));
             List<Delivery> userDeliveries = deliveryService.getAllUserDeliveries(user, paginationUtil[0], paginationUtil[1]);
-            System.out.println("USER DELIVERIES " + userDeliveries);
+            LOG.debug("USER DELIVERIES " + userDeliveries);
 
             req.setAttribute("currentPage", paginationUtil[0]);
             req.setAttribute("totalPages", paginationUtil[2]);

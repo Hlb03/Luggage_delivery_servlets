@@ -32,7 +32,6 @@ public class ReportViewCommand extends Command {
             List<Route> allRoutes =
                     routeService.getAllRoutes(1, (int) routeService.getRoutesAmount(), "distance", "asc");
 
-//            System.out.println("DOWNLOAD PDF " + req.getParameter("downloadPdf"));
             req.setAttribute("downloadPdf", req.getParameter("downloadPdf"));
             req.setAttribute("routes", allRoutes);
         } catch (DataBaseException ex) {

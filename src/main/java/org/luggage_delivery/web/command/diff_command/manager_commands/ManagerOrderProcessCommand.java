@@ -27,7 +27,6 @@ public class ManagerOrderProcessCommand extends Command {
 
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("IN MANAGER PROCESS COMMAND");
         Session session = HibernateUtil.getSessionFactory().openSession();
         DeliveryStatusService deliveryStatusService = new DeliveryStatusServiceImpl(new DeliveryStatusDAOImpl(session));
         DeliveryService deliveryService = new DeliveryServiceImpl(new DeliveryDAOImpl(session));

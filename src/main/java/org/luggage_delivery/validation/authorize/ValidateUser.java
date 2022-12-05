@@ -13,7 +13,7 @@ public class ValidateUser {
     public static void validateUserData(User user, String login, String password)
                                         throws UserNotExistsException, IncorrectPasswordException {
         if (user == null)
-            throw new UserNotExistsException("User with login" + login + " do not exists");
+            throw new UserNotExistsException("User with login " + login + " do not exists");
 
         if (!user.getPassword().equals(password))
             throw new IncorrectPasswordException("Incorrect password inputted");

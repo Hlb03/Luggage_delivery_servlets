@@ -14,6 +14,9 @@ import org.luggage_delivery.service.RouteService;
 import org.luggage_delivery.service.service_impls.RouteServiceImpl;
 import org.luggage_delivery.session_factory_config.HibernateUtil;
 import org.luggage_delivery.web.command.Command;
+import org.luggage_delivery.web.command.diff_command.manager_commands.ViewUsersOrdersCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,8 @@ import java.math.BigDecimal;
 import static org.luggage_delivery.util.PriceCalculationUtil.calculateGeneralPrice;
 
 public class OrderPriceCalculationCommand extends Command {
+
+    private final static Logger LOG = LoggerFactory.getLogger(OrderPriceCalculationCommand.class);
 
     @Override
     public String executeCommand(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -40,7 +45,7 @@ public class OrderPriceCalculationCommand extends Command {
 
             delivery.setTotalPrice(calculateGeneralPrice(delivery, req.getParameter("option")));
 
-            System.out.println("TOTAL PRICE IS - " + delivery.getTotalPrice());
+            LOG.debug("TOTAL PRICE IS - " + delivery.getTotalPrice());
         } catch (DataBaseException ex) {
             ex.printStackTrace();
         }

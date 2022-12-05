@@ -38,8 +38,8 @@ public class RoleDAOImpl implements RoleDAO {
     @Override
     public Role getByName(String roleName) {
         return session.createQuery("SELECT r from Role r where r.roleName = :roleName", Role.class)
-                        .setParameter("roleName", roleName)
-                        .uniqueResult();
+                .setParameter("roleName", roleName)
+                .uniqueResult();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RoleDAOImpl implements RoleDAO {
 
     @Override
     public void deleteRole(Role role) {
-        System.out.println(session.createQuery("delete from Role r where r.roleName = :roleName")
-                .setParameter("roleName", role.getRoleName()).executeUpdate());
+        session.createQuery("delete from Role r where r.roleName = :roleName")
+                .setParameter("roleName", role.getRoleName()).executeUpdate();
     }
 }

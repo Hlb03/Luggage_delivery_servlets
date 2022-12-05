@@ -5,10 +5,16 @@ package org.luggage_delivery.util;
   Cur_time: 18:11
 */
 
+import org.luggage_delivery.web.command.diff_command.AddNewUserCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.ResourceBundle;
 
 public class PaginationUtil {
+
+    private final static Logger LOG = LoggerFactory.getLogger(PaginationUtil.class);
 
     private final static ResourceBundle rb = ResourceBundle.getBundle("pagination");
 
@@ -16,12 +22,12 @@ public class PaginationUtil {
         int page;
 
         int amountOfRoutesOnPage =  Integer.parseInt(rb.getString("main-page.routes"));
-        System.out.println("INFO ABOUT AMOUNT OF ROUTE IN MAIN PAGE = " + amountOfRoutesOnPage);
+        LOG.debug("INFO ABOUT AMOUNT OF ROUTE IN MAIN PAGE = " + amountOfRoutesOnPage);
 
         if (req.getParameter("page") == null)
             page = 1;
         else page = Integer.parseInt(req.getParameter("page"));
-        System.out.println("CURRENT PAGE IS - " + page);
+        LOG.debug("CURRENT PAGE IS - " + page);
 
         int totalPages = totalDataAmount/amountOfRoutesOnPage;
         if (totalDataAmount % amountOfRoutesOnPage != 0)

@@ -23,11 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) throws DataBaseException {
         try {
-//            validateUserData(user);
             userDAO.addNewUser(user);
-//        } catch (DataValidateException ex) {
-//            System.out.println(ex.getMessage());
-//            ex.printStackTrace();
         } catch (Exception e) {
             throw new DataBaseException("Failed to add new user", e);
         }
@@ -35,13 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(int id) throws DataBaseException {
-        User user = null;
+        User user;
         try {
-//            validateUserId(id);
             user = userDAO.getById(id);
-//        } catch (DataValidateException ex) {
-//            System.out.println(ex.getMessage());
-//            ex.printStackTrace();
         } catch (Exception e) {
             throw new DataBaseException("Failed to get user by id");
         }
@@ -50,13 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByLogin(String userLogin) throws DataBaseException {
-        User user = null;
+        User user;
         try {
-//            validateUserLogin(userLogin);
             user = userDAO.getByLogin(userLogin);
-//        } catch (DataValidateException ex) {
-//            System.out.println(ex.getMessage());
-//            ex.printStackTrace();
         } catch (Exception e) {
             throw new DataBaseException("Failed to get user by login", e);
         }
