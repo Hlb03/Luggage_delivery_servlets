@@ -7,21 +7,15 @@ package org.luggage_delivery.pdf_creation;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.wicket.markup.html.link.DownloadLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.util.file.File;
 import org.luggage_delivery.entity.Delivery;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 public class CreatePDF {
@@ -33,7 +27,7 @@ public class CreatePDF {
         try {
             PdfWriter.getInstance(document,
                     Files.newOutputStream(Paths.get("C:\\Users\\admin\\OneDrive\\Рабочий стол\\KPI_studying\\V semestr\\" +
-                            "Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\resources\\pdfs\\reportOne.pdf")));
+                            "Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\resources\\pdfs\\report.pdf")));
 
             document.open();
             Font font = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
@@ -70,10 +64,10 @@ public class CreatePDF {
 
     private static void copyPdf() throws IOException {
         File originalPdf = new File("C:\\Users\\admin\\OneDrive\\Рабочий стол\\KPI_studying\\V semestr" +
-                    "\\Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\resources\\pdfs\\reportOne.pdf");
+                    "\\Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\resources\\pdfs\\report.pdf");
 
         Path copied = Paths.get("C:\\Users\\admin\\OneDrive\\Рабочий стол\\KPI_studying\\V semestr" +
-                "\\Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\webapp\\pdf_reports\\reportStatistics.pdf");
+                "\\Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\webapp\\pdf_reports\\statistics.pdf");
 
         Path originalPath = originalPdf.toPath();
         Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
@@ -81,7 +75,7 @@ public class CreatePDF {
 
     private static boolean deletePreviousReport() {
         File file = new File("C:\\Users\\admin\\OneDrive\\Рабочий стол\\KPI_studying\\V semestr" +
-                "\\Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\webapp\\pdf_reports\\reportStatistics.pdf");
+                "\\Java web-programming\\Lab_3\\Luggage-delivery\\src\\main\\webapp\\pdf_reports\\statistics.pdf");
 
         return file.delete();
     }

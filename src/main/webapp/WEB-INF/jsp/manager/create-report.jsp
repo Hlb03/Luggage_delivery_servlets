@@ -134,11 +134,12 @@
             </div>
         </div>
 
+<%--        <a href="../../../pdf_reports/statistics.pdf">--%>
         <c:if test="${requestScope.downloadPdf ne null}">
             <script>
                 var link = document.createElement('a');
-                link.setAttribute('download', "reportStatistics.pdf");
-                link.href = "../../../pdf_reports/reportStatistics.pdf"
+                link.setAttribute('download', "statistics.pdf");
+                link.href = "../../../pdf_reports/statistics.pdf"
                 document.body.appendChild(link);
                 link.click();
                 link.remove();

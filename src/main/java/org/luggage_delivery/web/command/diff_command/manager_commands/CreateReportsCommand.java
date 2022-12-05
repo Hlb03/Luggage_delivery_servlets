@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
+import static java.lang.Thread.sleep;
 import static org.luggage_delivery.pdf_creation.CreatePDF.createPDF;
 
 public class CreateReportsCommand extends Command {
@@ -40,23 +41,22 @@ public class CreateReportsCommand extends Command {
 
             if (req.getParameter("report-date") != null) {
                 factory = new DayReportFactory(new DeliveryDAOImpl(session));
-//                System.out.println("DAY REPORT: " +
                 createPDF(factory.createDeliveryReport().createReport(Date.valueOf(req.getParameter("report-date"))),
                         req.getParameter("report-date") + " date. All orders that should be on this date are:");
             } else if (req.getParameter("routeId") != null) {
                 factory = new RouteReportFactory(new DeliveryDAOImpl(session));
                 Route route = routeService.getById(Integer.parseInt(req.getParameter("routeId")));
-                //                System.out.println("ROUTE REPORT: " +
                 createPDF(factory.createDeliveryReport().createReport(routeService.getById(Integer.parseInt(req.getParameter("routeId")))),
                         route.getStartPoint() + " -> " + route.getDestinationPoint() + " route. All orders made on this route are:");
             }
 
+            session.close();
+            sleep(2500);
         } catch (DataBaseException ex) {
             ex.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
-//        req.setAttribute("downloadPdf", true);
-        session.close();
 
         return "Luggage-delivery?cmd=report-view&downloadPdf=true";
     }
